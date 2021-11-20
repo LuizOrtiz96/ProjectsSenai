@@ -1,6 +1,7 @@
 package br.com.luizortiz.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Tarefa {
 
@@ -77,4 +78,20 @@ public class Tarefa {
 		this.status = status;
 	}
 
+	public String formattoSave() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getId() + ";");
+		DateTimeFormatter padraoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		builder.append(this.getDataCriacao().format(padraoData) + ";");
+		builder.append(this.getDataLimite().format(padraoData) + ";");
+		if (this.getDataConcluida() != null) {
+			builder.append(this.getDataConcluida().format(padraoData));
+		}
+		builder.append(";");
+		builder.append(this.getDescricao() + ";");
+		builder.append(this.getAutor() + ";");
+		builder.append(this.getComentario() + ";");
+		builder.append(this.getStatus().ordinal() + "\n");
+		return builder.toString();
+	}
 }

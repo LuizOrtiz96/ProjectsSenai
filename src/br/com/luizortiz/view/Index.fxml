@@ -39,56 +39,11 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="tfTarefa" layoutX="80.0" layoutY="127.0" prefHeight="25.0" prefWidth="256.0" promptText="Digite a tarefa a ser realizada " />
-            <TextArea fx:id="taComentarios" layoutX="29.0" layoutY="224.0" prefHeight="149.0" prefWidth="448.0" promptText="Digite os comentários " />
-            <TextField fx:id="tfAutor" layoutX="80.0" layoutY="92.0" prefHeight="25.0" prefWidth="256.0" promptText="Digite o nome do autor" />
-            <TextField fx:id="tfStatus" layoutX="80.0" layoutY="160.0" />
             <DatePicker fx:id="dpData" layoutX="163.0" layoutY="60.0" promptText="Inserir data" />
-            <Button fx:id="btLimpar" layoutX="365.0" layoutY="389.0" mnemonicParsing="false" onAction="#btCleaner" prefHeight="69.0" prefWidth="112.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="49.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/download%20(1).png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Limpar dados" textAlignment="JUSTIFY" />
-         </tooltip></Button>
-            <Button fx:id="btConcluir" layoutX="197.0" layoutY="389.0" mnemonicParsing="false" onAction="#btFinished" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="66.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/download.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Finalizar tarefa" />
-         </tooltip></Button>
-            <Button fx:id="btApagar" layoutX="281.0" layoutY="390.0" mnemonicParsing="false" onAction="#btExclude" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="83.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/501-5013698_delete-article-alert-delete-file-logo-png-clipart.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Apagar dados" />
-         </tooltip></Button>
-            <Button fx:id="btAdiar" layoutX="113.0" layoutY="389.0" mnemonicParsing="false" onAction="#btExtend" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="80.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/icone_prazo.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Adiar tarefa" />
-         </tooltip></Button>
-            <Button fx:id="btSalvar" layoutX="29.0" layoutY="389.0" mnemonicParsing="false" onAction="#btSafe" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+            <TextField fx:id="tfAutor" layoutX="80.0" layoutY="92.0" prefHeight="25.0" prefWidth="256.0" promptText="Digite o nome do autor" />
+            <TextField fx:id="tfTarefa" layoutX="80.0" layoutY="127.0" prefHeight="25.0" prefWidth="256.0" promptText="Digite a tarefa a ser realizada " />
+            <TextField fx:id="tfStatus" editable="false" layoutX="80.0" layoutY="160.0" />
+            <Button fx:id="btSalvar" defaultButton="true" layoutX="29.0" layoutY="389.0" mnemonicParsing="false" onAction="#btSafeClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="70.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -99,16 +54,61 @@
          <tooltip>
             <Tooltip text="Salvar tarefa" />
          </tooltip></Button>
+            <Button fx:id="btAdiar" layoutX="113.0" layoutY="389.0" mnemonicParsing="false" onAction="#btExtendClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="80.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/icone_prazo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <tooltip>
+            <Tooltip text="Adiar tarefa" />
+         </tooltip></Button>
+            <Button fx:id="btConcluir" layoutX="197.0" layoutY="389.0" mnemonicParsing="false" onAction="#btFinishedClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/download.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <tooltip>
+            <Tooltip text="Finalizar tarefa" />
+         </tooltip></Button>
+            <Button fx:id="btApagar" layoutX="281.0" layoutY="390.0" mnemonicParsing="false" onAction="#btExcludeClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="83.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/501-5013698_delete-article-alert-delete-file-logo-png-clipart.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <tooltip>
+            <Tooltip text="Apagar dados" />
+         </tooltip></Button>
+            <Button fx:id="btLimpar" layoutX="365.0" layoutY="389.0" mnemonicParsing="false" onAction="#btCleanerClick" prefHeight="69.0" prefWidth="112.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="49.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../bin/br/com/luizortiz/imagem/png-clipart-computer-icons-broom-dustpan-others-miscellaneous-household.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <tooltip>
+            <Tooltip text="Limpar dados" textAlignment="JUSTIFY" />
+         </tooltip></Button>
+      <ImageView fitHeight="130.0" fitWidth="161.0" layoutX="341.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../bin/br/com/luizortiz/imagem/1-gestao-de-tarefas.jpg" />
+         </image>
+      </ImageView>
+            <TextArea fx:id="taComentarios" layoutX="29.0" layoutY="224.0" prefHeight="149.0" prefWidth="448.0" promptText="Digite os comentários " />
       <Label alignment="CENTER" layoutX="100.0" layoutY="14.0" prefHeight="37.0" prefWidth="300.0" text="TAREFAS">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="143.0" fitWidth="131.0" layoutX="347.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../bin/br/com/luizortiz/imagem/pngtree-flat-wind-blue-task-list-png-image_4896632.jpg" />
-         </image>
-      </ImageView>
          </children>
       
 </AnchorPane>

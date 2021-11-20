@@ -1,5 +1,6 @@
 package br.com.luizortiz.application;
 
+import br.com.luizortiz.io.TarefaIO;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			TarefaIO.createFiles();
 			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("../view/Index.fxml"));
 			Scene scene = new Scene(root, 500, 500);
 			scene.getStylesheets().add(getClass().getResource("../view/application.css").toExternalForm());
