@@ -13,7 +13,7 @@ public class Main extends Application {
 		try {
 			TarefaIO.createFiles();
 			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("../view/Index.fxml"));
-			Scene scene = new Scene(root, 500, 500);
+			Scene scene = new Scene(root, 900, 500);
 			scene.getStylesheets().add(getClass().getResource("../view/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -25,4 +25,5 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }
