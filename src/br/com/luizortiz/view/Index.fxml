@@ -56,7 +56,7 @@
          <tooltip>
             <Tooltip text="Salvar tarefa" />
          </tooltip></Button>
-            <Button fx:id="btAdiar" layoutX="113.0" layoutY="389.0" mnemonicParsing="false" onAction="#btExtendClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+            <Button fx:id="btAdiar" disable="true" layoutX="113.0" layoutY="389.0" mnemonicParsing="false" onAction="#btExtendClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="80.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -67,7 +67,7 @@
          <tooltip>
             <Tooltip text="Adiar tarefa" />
          </tooltip></Button>
-            <Button fx:id="btConcluir" layoutX="197.0" layoutY="389.0" mnemonicParsing="false" onAction="#btFinishedClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+            <Button fx:id="btConcluir" disable="true" layoutX="197.0" layoutY="389.0" mnemonicParsing="false" onAction="#btFinishedClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="66.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -78,7 +78,7 @@
          <tooltip>
             <Tooltip text="Finalizar tarefa" />
          </tooltip></Button>
-            <Button fx:id="btApagar" layoutX="281.0" layoutY="390.0" mnemonicParsing="false" onAction="#btExcludeClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
+            <Button fx:id="btApagar" disable="true" layoutX="281.0" layoutY="390.0" mnemonicParsing="false" onAction="#btExcludeClick" prefHeight="69.0" prefWidth="78.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="83.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
                <image>
