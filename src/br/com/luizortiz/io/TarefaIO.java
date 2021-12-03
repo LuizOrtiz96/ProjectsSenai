@@ -89,4 +89,15 @@ public class TarefaIO {
 
 	}
 
+	public static void saveTarefas(List<Tarefa> tarefas) throws IOException {
+		File arqTarefas = new File(FILE_TAREFA);
+		FileWriter writer = new FileWriter(arqTarefas);
+		for (Tarefa t : tarefas) {
+			writer.write(t.formattoSave());
+
+		}
+		writer.close();
+
+	}
+
 }

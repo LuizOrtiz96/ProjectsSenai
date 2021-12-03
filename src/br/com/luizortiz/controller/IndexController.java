@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,6 +35,9 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 	private TextField tfTarefa;
 
 	@FXML
+	private TextField tfCod;
+
+	@FXML
 	private TextArea taComentarios;
 
 	@FXML
@@ -41,6 +45,9 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 
 	@FXML
 	private TextField tfStatus;
+
+	@FXML
+	private Label lbStatus;
 
 	@FXML
 	private DatePicker dpData;
@@ -84,11 +91,53 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 
 	@FXML
 	void btExtendClick(ActionEvent event) {
+		if (tarefa != null) {
+			int dias = Integer.parseInt(JOptionPane.showInputDialog(null, "Quantos dias você deseja Adiar ?",
+					"Informe quantos dias", JOptionPane.QUESTION_MESSAGE));
+			LocalDate novaData = tarefa.getDataLimite().plusDays(dias);
+			tarefa.setDataLimite(novaData);
+			tarefa.setStatus(StatusTarefa.ADIADA);
+			DateTimeFormatter padraoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+			try {
+				TarefaIO.saveTarefas(tarefas);
+				JOptionPane.showMessageDialog(null, "Sua tarefa foi adiada com sucesso",
+						" A nova data será " + tarefa.getDataLimite().format(padraoData),
+						JOptionPane.INFORMATION_MESSAGE);
+
+				carregarTarefas();
+				limpar();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar as tarefas: " + e.getMessage(), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	@FXML
 	void btFinishedClick(ActionEvent event) {
+		if (tarefa != null) {
+			tarefa.setDataConcluida(LocalDate.now());
+			tarefa.setStatus(StatusTarefa.CONCLUIDA);
+			DateTimeFormatter padraoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+			try {
+				TarefaIO.saveTarefas(tarefas);
+				JOptionPane.showMessageDialog(null, "Sua tarefa foi concluída com sucesso", null,
+						JOptionPane.INFORMATION_MESSAGE);
+
+				carregarTarefas();
+				limpar();
+
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao concluir a tarefa: " + e.getMessage(), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 
@@ -146,11 +195,17 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 		tfTarefa.setText(null);
 		taComentarios.setText(null);
 		tfStatus.clear();
+		tfCod.clear();
+		dpData.setDisable(false);
 		dpData.requestFocus();
+		tfAutor.setDisable(false);
 		btAdiar.setDisable(true);
 		btConcluir.setDisable(true);
 		btApagar.setDisable(true);
 		tvTarefa.getSelectionModel().clearSelection();
+		tfTarefa.setDisable(false);
+		taComentarios.setDisable(false);
+		btSalvar.setDisable(false);
 
 	}
 
@@ -202,14 +257,35 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 			tfAutor.setText(tarefa.getAutor());
 			taComentarios.setText(tarefa.getComentario());
 			tfStatus.setText(tarefa.getStatus() + "");
+			tfCod.setText(tarefa.getId() + "");
 			dpData.setValue(tarefa.getDataLimite());
-			btAdiar.setDisable(false);
-			btConcluir.setDisable(false);
-			btApagar.setDisable(false);
 			dpData.setDisable(true);
 			dpData.setOpacity(1);
+
+			if (tarefa.getStatus() == StatusTarefa.ADIADA) {
+				btAdiar.setDisable(true);
+				btConcluir.setDisable(true);
+				btApagar.setDisable(false);
+				lbStatus.setText("Data prevista : ");
+
+			} else if (tarefa.getStatus() == StatusTarefa.CONCLUIDA) {
+				btConcluir.setDisable(true);
+				btAdiar.setDisable(true);
+				btLimpar.setDisable(false);
+				btSalvar.setDisable(true);
+				btApagar.setDisable(true);
+				lbStatus.setText("Data de realização: ");
+				dpData.setValue(tarefa.getDataConcluida());
+				return;
+
+			} else {
+				btSalvar.setDisable(false);
+				btConcluir.setDisable(false);
+				btAdiar.setDisable(false);
+			}
 
 		}
 
 	}
+
 }
