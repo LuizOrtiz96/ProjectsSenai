@@ -2,12 +2,14 @@ package br.com.luizortiz.io;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -85,6 +87,7 @@ public class TarefaIO {
 		}
 		reader.close();
 		buff.close();
+		Collections.sort(tarefas);
 		return tarefas;
 
 	}
@@ -100,4 +103,13 @@ public class TarefaIO {
 
 	}
 
+	public static long showNextid() throws FileNotFoundException {
+		long showId;
+		Scanner sc = new Scanner(new File(FILE_ID));
+		showId = sc.nextLong();
+
+		sc.close();
+		return showId;
+
+	}
 }

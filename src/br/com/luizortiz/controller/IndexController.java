@@ -24,6 +24,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -86,6 +87,25 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 
 	@FXML
 	void btExcludeClick(ActionEvent event) {
+		if (tarefa != null) {
+			int resposta = JOptionPane.showConfirmDialog(null, "Deseja excluir a Tarefa" + tarefa.getId() + "?",
+					"Confirmar exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (resposta == 0) {
+				tarefas.remove(tarefa);
+
+				try {
+					TarefaIO.saveTarefas(tarefas);
+					JOptionPane.showMessageDialog(null, "Sua tarefa foi excluída com sucesso ! ", "Informe",
+							JOptionPane.INFORMATION_MESSAGE);
+					carregarTarefas();
+					limpar();
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Erro ao excluir a tarefa: " + e.getMessage(), "Erro",
+							JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+				}
+			}
+		}
 
 	}
 
@@ -156,11 +176,14 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 		} else if (dpData.getValue().isBefore(LocalDate.now())) {
 			JOptionPane.showMessageDialog(null, "Informe uma data válida", "Informe", JOptionPane.ERROR_MESSAGE);
 		} else {
-			// Instanciando a Tarefa
-			tarefa = new Tarefa();
+			// verifica se a tarefa é nula pra alterar uma tarefa
+			if (tarefa == null) {
+				// Instanciando a Tarefa
+				tarefa = new Tarefa();
+				tarefa.setDataCriacao(LocalDate.now());
+				tarefa.setStatus(StatusTarefa.ABERTA);
+			}
 			// Popular a tarefa
-			tarefa.setDataCriacao(LocalDate.now());
-			tarefa.setStatus(StatusTarefa.ABERTA);
 			tarefa.setDataLimite(dpData.getValue());
 			tarefa.setAutor(tfAutor.getText());
 			tarefa.setDescricao(tfTarefa.getText());
@@ -169,7 +192,14 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 			// TODO Inserir no Banco de Dados
 
 			try {
-				TarefaIO.insert(tarefa);
+				if (tarefa.getId() == 0) {
+					TarefaIO.insert(tarefa);
+				} else {
+					TarefaIO.saveTarefas(tarefas);
+					JOptionPane.showMessageDialog(null, "Sua tarefa foi alterada com sucesso ! ", "Informe",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+
 				// Limpar os campos
 				limpar();
 				// Carregar as Tarefas
@@ -206,6 +236,7 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 		tfTarefa.setDisable(false);
 		taComentarios.setDisable(false);
 		btSalvar.setDisable(false);
+		tfCod.setText(null);
 
 	}
 
@@ -228,10 +259,35 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 			};
 
 		});
+
+		tvTarefa.setRowFactory(call -> new TableRow<Tarefa>() {
+			protected void updateItem(Tarefa item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null) {
+					setStyle(" ");
+				} else if (item.getStatus() == StatusTarefa.CONCLUIDA) {
+					setStyle("-fx-background-color:green");
+				} else if (item.getDataLimite().isBefore(LocalDate.now())) {
+					setStyle("-fx-background-color:black");
+				} else if (item.getStatus() == StatusTarefa.ADIADA) {
+					setStyle("-fx-fill:red");
+				} else {
+					setStyle("-fx-text-fill:black;");
+				}
+			};
+		});
 		// Evento de seleção de item na tabela
 		tvTarefa.getSelectionModel().selectedItemProperty().addListener(this);
 
 		carregarTarefas();
+
+		try {
+			tfCod.setText(TarefaIO.showNextid() + "");
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -263,6 +319,7 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 			dpData.setOpacity(1);
 
 			if (tarefa.getStatus() == StatusTarefa.ADIADA) {
+				btSalvar.setDisable(false);
 				btAdiar.setDisable(true);
 				btConcluir.setDisable(true);
 				btApagar.setDisable(false);
@@ -273,7 +330,7 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 				btAdiar.setDisable(true);
 				btLimpar.setDisable(false);
 				btSalvar.setDisable(true);
-				btApagar.setDisable(true);
+				btApagar.setDisable(false);
 				lbStatus.setText("Data de realização: ");
 				dpData.setValue(tarefa.getDataConcluida());
 				return;
