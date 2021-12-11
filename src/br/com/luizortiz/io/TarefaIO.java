@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -111,5 +112,22 @@ public class TarefaIO {
 		sc.close();
 		return showId;
 
+	}
+
+	public static void exportHtml(List<Tarefa> tarefas, File arquivo) throws IOException {
+		FileWriter writer = new FileWriter(arquivo);
+		writer.write("<html>\n");
+		writer.write("<body>\n");
+		writer.write("<h1>Lista de Tarefas</h1>\n");
+		writer.write("<ul>\n");
+		for (Tarefa tarefa : tarefas) {
+			writer.write("<li>" + tarefa.getDataLimite() + " - " + tarefa.getDescricao() + "</li>\n");
+
+		}
+
+		writer.write("</ul>\n");
+		writer.write("</body>\n");
+		writer.write("</html>");
+		writer.close();
 	}
 }

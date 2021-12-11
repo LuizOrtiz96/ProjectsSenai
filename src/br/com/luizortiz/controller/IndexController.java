@@ -1,5 +1,6 @@
 package br.com.luizortiz.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -8,7 +9,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.com.luizortiz.io.TarefaIO;
 import br.com.luizortiz.model.StatusTarefa;
@@ -18,7 +22,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -29,6 +35,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class IndexController implements Initializable, ChangeListener<Tarefa> {
 
@@ -344,5 +354,57 @@ public class IndexController implements Initializable, ChangeListener<Tarefa> {
 		}
 
 	}
+
+	@FXML
+	void miExport(ActionEvent event) {
+		FileFilter filter = new FileNameExtensionFilter("Arquivos HTML", "html", "htm");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(filter);
+		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+			File arqSelecionado = chooser.getSelectedFile();
+			if (!arqSelecionado.getAbsolutePath().endsWith(".html")) {
+				arqSelecionado = new File(arqSelecionado + ".html");
+			}
+			try {
+				TarefaIO.exportHtml(tarefas, arqSelecionado);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao exportar as tarefas:" + e.getMessage(), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@FXML
+	void miSair(ActionEvent event) {
+
+		int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente sair ?", "Confirmar saída",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (resposta == 0) {
+			System.exit(0);
+		}
+	}
+
+	@FXML
+	void miSobre(ActionEvent event) {
+		AnchorPane root = null;
+		try {
+			root = (AnchorPane) FXMLLoader.load(getClass().getResource("/br/com/luizortiz/view/About.fxml"));
+			Scene scene = new Scene(root, 400, 400);
+			scene.getStylesheets()
+					.add(getClass().getResource("/br/com/luizortiz/view/application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.initStyle(StageStyle.UNDECORATED);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
 
 }
